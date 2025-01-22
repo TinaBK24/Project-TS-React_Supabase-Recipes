@@ -7,7 +7,7 @@ import { Database } from './utils/database.types';
 import AboutUs from './pages/AboutUs';
 import Recipe from './pages/Recipe';
 import Login from './pages/Login';
-import { UserProvider } from './context/UserContext';
+// import { UserProvider } from './context/UserContext';
 
 function App() {
   const [popularRecipes, setPopularRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
