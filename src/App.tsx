@@ -26,9 +26,9 @@ function App() {
 
   return (
     <>
-      <UserProvider>
-        <RouterProvider router={router} />
-      </UserProvider>
+      {/* <UserProvider> */}
+      <RouterProvider router={router} />
+      {/* </UserProvider> */}
     </>
   )
 }
