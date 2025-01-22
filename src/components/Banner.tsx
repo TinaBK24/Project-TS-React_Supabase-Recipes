@@ -2,7 +2,7 @@ const Banner = () => {
     return (
         <div className="relative z-0 mb-12">
             <img
-                src="./public/img/HeroImage.png"
+                src="./img/HeroImage.png"
                 alt=""
                 className="w-full h-64 object-cover"
             />
