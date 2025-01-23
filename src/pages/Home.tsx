@@ -22,9 +22,9 @@ const Home = () => {
     return (
         <section className="bg-white">
             <Banner />
-            {/* {loading ? ( */}
+            {/* {loading ? (
             <p className="text-3xl font-semibold text-center pb-7">Favoriten werden geladen...</p>
-            {/* ) : ( */}
+            ) : ( */}
             <PopularRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} setPopularRecipes={setPopularRecipes} />
             {/* )} */}
         </section>
