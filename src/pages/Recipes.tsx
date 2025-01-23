@@ -2,17 +2,11 @@ import { Link } from "react-router-dom";
 import Banner from "../components/Banner";
 import OtherRecipes from "../components/OtherRecipes";
 import PopularRecipes from "../components/PopularRecipes";
-import { Database } from "../utils/database.types";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
-interface RecipesProps {
-    popularRecipes: Database['public']['Tables']['recipes']['Row'][];
-    setPopularRecipes: React.Dispatch<React.SetStateAction<Database['public']['Tables']['recipes']['Row'][]>>;
-}
-
-const Recipes: React.FC<RecipesProps> = (props) => {
-    const { user } = useContext(UserContext);
+const Recipes = () => {
+    const { user, favRezepte, setFavRezepte, popularRecipes, setPopularRecipes } = useContext(UserContext);
 
     return (
         <>
@@ -20,14 +14,8 @@ const Recipes: React.FC<RecipesProps> = (props) => {
             {user ? (
                 <section className="bg-white">
                     <Banner />
-                    <PopularRecipes
-                        popularRecipes={props.popularRecipes}
-                        setPopularRecipes={props.setPopularRecipes}
-                    />
-                    <OtherRecipes
-                        popularRecipes={props.popularRecipes}
-                        setPopularRecipes={props.setPopularRecipes}
-                    />
+                    <PopularRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} setPopularRecipes={setPopularRecipes} />
+                    <OtherRecipes />
                 </section>
             ) : (
                 <section className="bg-white h-96 flex justify-center items-center">

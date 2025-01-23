@@ -1,18 +1,32 @@
-import React from "react";
+import {
+    useContext,
+    // useEffect, 
+    // useState 
+} from "react";
 import Banner from "../components/Banner";
 import PopularRecipes from "../components/PopularRecipes";
-import { Database } from "../utils/database.types";
+import { UserContext } from "../context/UserContext";
+// import { fetchFavoriteRecipes } from "../utils/favoriteRecipes";
 
-interface HomeProps {
-    popularRecipes: Database['public']['Tables']['recipes']['Row'][];
-    setPopularRecipes: React.Dispatch<React.SetStateAction<Database['public']['Tables']['recipes']['Row'][]>>;
-}
+const Home = () => {
+    const { favRezepte, setFavRezepte, popularRecipes, setPopularRecipes } = useContext(UserContext);
+    // const [loading, setLoading] = useState<boolean>(true);
 
-const Home: React.FC<HomeProps> = (props) => {
+    // useEffect(() => {
+    //     const loadFavorites = async () => {
+    //         await fetchFavoriteRecipes(setFavRezepte);
+    //         setLoading(false);
+    //     }
+    // }, []);
+
     return (
         <section className="bg-white">
             <Banner />
-            <PopularRecipes popularRecipes={props.popularRecipes} setPopularRecipes={props.setPopularRecipes} />
+            {/* {loading ? ( */}
+            <p className="text-3xl font-semibold text-center pb-7">Favoriten werden geladen...</p>
+            {/* ) : ( */}
+            <PopularRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} setPopularRecipes={setPopularRecipes} />
+            {/* )} */}
         </section>
     );
 }

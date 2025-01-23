@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { Database } from "../utils/database.types";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { fetchFavoriteRecipes, toggleFavoriteRecipe } from "../utils/favoriteRecipes";
 
-interface OtherRecipesProps {
-    popularRecipes: Database['public']['Tables']['recipes']['Row'][];
-    setPopularRecipes: React.Dispatch<React.SetStateAction<Database['public']['Tables']['recipes']['Row'][]>>;
-}
-
-const OtherRecipes: React.FC<OtherRecipesProps> = (props) => {
+const OtherRecipes = () => {
     const [otherRecipes, setOtherRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
-    const popularIds = props.popularRecipes.map(recipe => recipe.id) || [];
+    const { popularRecipes, favRezepte, setFavRezepte } = useContext(UserContext);
+    const popularIds = popularRecipes.map(recipe => recipe.id) || [];
 
     const fetchOtherRecipes = async () => {
         const otherResponse = await supabase
@@ -26,7 +24,11 @@ const OtherRecipes: React.FC<OtherRecipesProps> = (props) => {
 
     useEffect(() => {
         fetchOtherRecipes();
-    })
+    }, [popularIds]);
+
+    useEffect(() => {
+        fetchFavoriteRecipes(setFavRezepte);
+    }, []);
 
     return (
         <>
@@ -38,7 +40,7 @@ const OtherRecipes: React.FC<OtherRecipesProps> = (props) => {
                         {otherRecipes.map((recipe) => (
                             <div
                                 key={recipe.id}
-                                className="w-full flex flex-wrap bg-neutral-100 rounded-2xl"
+                                className="w-full flex bg-neutral-100 rounded-2xl"
                             >
                                 {recipe.imageUrl && (
                                     <img
@@ -54,12 +56,19 @@ const OtherRecipes: React.FC<OtherRecipesProps> = (props) => {
                                         to={`/recipes/${recipe.name.toLowerCase()}`}
                                         className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
                                     >Zum Rezept</Link>
+
+                                    <button
+                                        onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
+                                        className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
+                                    >
+                                        {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
+                                    </button>
                                 </div>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="text-3xl font-semibold text-center mb-7">Loading...</p>
+                    <p className="text-3xl font-semibold text-center pb-7">Loading...</p>
                 )}
             </section></>
     );

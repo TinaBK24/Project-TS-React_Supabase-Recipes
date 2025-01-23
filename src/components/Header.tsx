@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
 
 const Header = () => {
+    const { favRezepte } = useContext(UserContext);
+
     return (
         <header className="flex justify-between items-center py-6 bg-white pl-40 pr-16 mt-6 text-xl">
             <div className="flex items-center gap-2">
@@ -12,6 +16,7 @@ const Header = () => {
             <nav className="flex gap-10 font-semibold">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/recipes">Rezepte</NavLink>
+                <NavLink to="/my-recipes">Meine Rezepte ({favRezepte.length})</NavLink>
                 <NavLink to="/about">Über uns</NavLink>
             </nav>
             <NavLink to="/login" className="font-semibold">Login</NavLink>
