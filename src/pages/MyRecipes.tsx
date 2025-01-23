@@ -45,7 +45,7 @@ const MyRecipes = () => {
     return (
         <section className="bg-white">
             <Banner />
-            <h1 className="text-3xl font-semibold text-center mb-7">Die beliebtesten Rezepte</h1>
+            <h1 className="text-3xl font-semibold text-center mb-7">Lieblingsrezepte</h1>
             {loading ? (
                 <p className="text-3xl font-semibold text-center pb-7">Rezepte werden geladen...</p>
             ) : favRezepte.length > 0 ? (
