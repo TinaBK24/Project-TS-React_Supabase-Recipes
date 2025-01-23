@@ -25,16 +25,19 @@ export const fetchFavoriteRecipes = async (
     }
 
     const recipes = data?.map(item => item.recipes).flat() || [];
+    console.log("Loaded favorites from supabase:", recipes);
     setFavRezepte(recipes);
 
     localStorage.setItem("favRezepte", JSON.stringify(recipes));
+
+
 };
 
 export const toggleFavoriteRecipe = async (
     recipeId: string,
     favRezepte: Database["public"]["Tables"]["recipes"]["Row"][],
     setFavRezepte: React.Dispatch<React.SetStateAction<Database["public"]["Tables"]["recipes"]["Row"][]>>,
-    popularRecipes: Database['public']['Tables']['recipes']['Row'][]
+    popularRecipes: Database["public"]["Tables"]["recipes"]["Row"][]
 ) => {
     const user = await supabase.auth.getUser();
 
@@ -56,10 +59,12 @@ export const toggleFavoriteRecipe = async (
             return;
         }
 
-        setFavRezepte(favRezepte.filter((favRecipe) => favRecipe.id !== recipeId));
+        setFavRezepte((prev) => prev.filter((favRecipe) => favRecipe.id !== recipeId));
 
-        localStorage.setItem("favRezepte", JSON.stringify(favRezepte.filter((favRecipe) => favRecipe.id !== recipeId)));
-
+        localStorage.setItem(
+            "favRezepte",
+            JSON.stringify(favRezepte.filter((favRecipe) => favRecipe.id !== recipeId))
+        );
         console.log("Rezept aus den Favoriten entfernt!");
     } else {
         const { error } = await supabase
@@ -73,7 +78,7 @@ export const toggleFavoriteRecipe = async (
 
         const favRecipe = popularRecipes.find((recipe) => recipe.id === recipeId);
         if (favRecipe) {
-            setFavRezepte([...favRezepte, favRecipe]);
+            setFavRezepte((prev) => [...prev, favRecipe]);
 
             localStorage.setItem("favRezepte", JSON.stringify([...favRezepte, favRecipe]));
         }

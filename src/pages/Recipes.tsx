@@ -15,7 +15,7 @@ const Recipes = () => {
                 <section className="bg-white">
                     <Banner />
                     <PopularRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} setPopularRecipes={setPopularRecipes} />
-                    <OtherRecipes />
+                    <OtherRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} />
                 </section>
             ) : (
                 <section className="bg-white h-96 flex justify-center items-center">
