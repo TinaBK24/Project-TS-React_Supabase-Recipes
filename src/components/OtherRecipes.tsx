@@ -33,10 +33,8 @@ const OtherRecipes: React.FC<OtherRecipesProps> = ({ favRezepte, setFavRezepte, 
     }, []);
 
     const handleToggleFavorite = async (recipeId: string) => {
-        // Перевірка, чи рецепт уже є у фаворитах
         const isCurrentlyFavorite = favRezepte.some((favRecipe) => favRecipe.id === recipeId);
 
-        // Оновлення глобального стану
         if (isCurrentlyFavorite) {
             setFavRezepte(favRezepte.filter((recipe) => recipe.id !== recipeId));
         } else {
@@ -46,7 +44,6 @@ const OtherRecipes: React.FC<OtherRecipesProps> = ({ favRezepte, setFavRezepte, 
             }
         }
 
-        // Виклик функції для оновлення в Supabase
         await toggleFavoriteRecipe(recipeId, favRezepte, setFavRezepte, popularRecipes);
     };
 
