@@ -11,22 +11,24 @@ const Recipes = () => {
     return (
         <>
 
-            {user ? (
-                <section className="bg-white">
-                    <Banner />
-                    <PopularRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} setPopularRecipes={setPopularRecipes} />
-                    <OtherRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} />
-                </section>
-            ) : (
-                <section className="bg-white h-96 flex justify-center items-center">
-                    <Link
-                        to="/login"
-                        className="text-2xl font-bold border-solid border-2 border-black p-4 bg-yellow-200 rounded-lg"
-                    >
-                        Login
-                    </Link>
-                </section>
-            )}
+            <section className="bg-white">
+                <Banner />
+                {user ? (
+                    <>
+                        <PopularRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} setPopularRecipes={setPopularRecipes} />
+                        <OtherRecipes favRezepte={favRezepte} setFavRezepte={setFavRezepte} popularRecipes={popularRecipes} />
+                    </>
+                ) : (
+                    <div className="h-96 flex justify-center items-center">
+                        <Link
+                            to="/login"
+                            className="text-2xl font-bold border-solid border-2 border-black p-4 bg-yellow-200 rounded-lg"
+                        >
+                            Login
+                        </Link>
+                    </div>
+                )}
+            </section>
         </>
     );
 }

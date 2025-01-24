@@ -41,47 +41,66 @@ const MyRecipes = () => {
         ladeFavoriten();
     }, []);
 
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data: session } = await supabase.auth.getSession();
+            if (session) {
+                ladeFavoriten();
+            } else {
+                console.log("Користувач не залогінений.");
+            }
+        };
+        checkSession();
+    }, []);
+
     return (
         <section className="bg-white">
             <Banner />
-            <h1 className="text-3xl font-semibold text-center mb-7">Lieblingsrezepte</h1>
+
             {user ? (
                 loading ? (
-                    <p className="text-3xl font-semibold text-center pb-7" > Rezepte werden geladen...</p>
+                    <p className="text-3xl font-semibold text-center pb-10" > Rezepte werden geladen...</p>
                 ) : favRezepte.length > 0 ? (
-                    <div className="flex flex-wrap justify-center gap-5 pb-10">
-                        {favRezepte.map((recipe) => (
-                            <div
-                                key={recipe.id}
-                                className="w-72 bg-neutral-100 rounded-2xl"
-                            >
-                                {recipe.imageUrl && (
-                                    <img
-                                        src={recipe.imageUrl}
-                                        alt={recipe.name}
-                                        className="w-full h-48 object-cover rounded-t-2xl"
-                                    />
-                                )}
-                                <div className="p-5 flex flex-col gap-2">
-                                    <h2 className="text-2xl font-semibold">{recipe.name}</h2>
-                                    <p>{recipe.description}</p>
-                                    <Link
-                                        to={`/recipes/${recipe.name.toLowerCase()}`}
-                                        className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
-                                    >Zum Rezept</Link>
+                    <div>
+                        <h1 className="text-3xl font-semibold text-center mb-7">Lieblingsrezepte</h1>
+                        <div className="flex flex-wrap justify-center gap-5 pb-10">
+                            {favRezepte.map((recipe) => (
+                                <div
+                                    key={recipe.id}
+                                    className="flex flex-col justify-between gap-5 w-72 bg-neutral-100 rounded-2xl"
+                                >
+                                    <div>
+                                        {recipe.imageUrl && (
+                                            <img
+                                                src={recipe.imageUrl}
+                                                alt={recipe.name}
+                                                className="w-full h-48 object-cover rounded-t-2xl"
+                                            />
+                                        )}
+                                        <div className="px-5 mt-3">
+                                            <h2 className="text-2xl font-semibold">{recipe.name}</h2>
+                                            <p>{recipe.description}</p>
+                                        </div>
+                                    </div>
+                                    <div className="px-5 pb-5">
+                                        <Link
+                                            to={`/recipes/${recipe.name ? recipe.name.toLowerCase() : ''}`}
+                                            className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
+                                        >Zum Rezept</Link>
 
-                                    <button
-                                        onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
-                                        className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
-                                    >
-                                        {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
-                                    </button>
+                                        <button
+                                            onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
+                                            className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
+                                        >
+                                            {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 ) : (
-                    <p className="text-3xl font-semibold text-center pb-7">Keine Favoriten gefunden.</p>
+                    <p className="text-3xl font-semibold text-center pb-10">Keine Favoriten gefunden.</p>
                 )
             ) : (
                 <section className="bg-white h-96 flex justify-center items-center">
