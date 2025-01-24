@@ -17,8 +17,6 @@ type User = {
 const UserAuth = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const firstNameRef = useRef<HTMLInputElement>(null);
-    const lastNameRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
@@ -30,8 +28,8 @@ const UserAuth = () => {
             password: passwordRef.current!.value,
             options: {
                 data: {
-                    firstName: firstNameRef.current!.value,
-                    lastName: lastNameRef.current!.value,
+                    firstName: "",
+                    lastName: "",
                 }
             }
         }
@@ -64,8 +62,6 @@ const UserAuth = () => {
 
         if (emailRef.current) emailRef.current.value = "";
         if (passwordRef.current) passwordRef.current.value = "";
-        if (firstNameRef.current) firstNameRef.current.value = "";
-        if (lastNameRef.current) lastNameRef.current.value = "";
     }
 
     async function login(): Promise<void> {
@@ -74,8 +70,8 @@ const UserAuth = () => {
             password: passwordRef.current!.value,
             options: {
                 data: {
-                    firstName: firstNameRef.current?.value || "",
-                    lastName: lastNameRef.current?.value || "",
+                    firstName: "",
+                    lastName: "",
                 }
             }
         }
@@ -116,18 +112,6 @@ const UserAuth = () => {
                         placeholder="Password"
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     />
-                    {/* <input
-                        ref={firstNameRef}
-                        type="text"
-                        placeholder="First Name"
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    />
-                    <input
-                        ref={lastNameRef}
-                        type="text"
-                        placeholder="Last Name"
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    /> */}
                 </form>
                 <div className="flex justify-between mt-6">
                     <button

@@ -1,9 +1,20 @@
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
+import { supabase } from "../utils/supabaseClient";
 
 const Header = () => {
-    const { favRezepte } = useContext(UserContext);
+    const { favRezepte, user, setUser } = useContext(UserContext);
+
+    const logout = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("Fehler beim Abmelden:", error.message);
+        } else {
+            setUser(null);
+            console.log("Benutzer erfolgreich abgemeldet");
+        }
+    };
 
     return (
         <header className="flex justify-between items-center py-6 bg-white pl-40 pr-16 mt-6 text-xl">
@@ -16,10 +27,23 @@ const Header = () => {
             <nav className="flex gap-10 font-semibold">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/recipes">Rezepte</NavLink>
-                <NavLink to="/my-recipes">Meine Rezepte ({favRezepte.length})</NavLink>
+                <NavLink to="/my-recipes">Meine Rezepte
+                    {user ? (`(${favRezepte.length})`) : ("")}
+                </NavLink>
                 <NavLink to="/about">Über uns</NavLink>
             </nav>
-            <NavLink to="/login" className="font-semibold">Login</NavLink>
+            {user ? (
+                <button
+                    onClick={logout}
+                    className="font-semibold"
+                >
+                    Logout
+                </button>
+            ) : (
+                <NavLink to="/login" className="font-semibold">
+                    Login
+                </NavLink>
+            )}
         </header>
     );
 }

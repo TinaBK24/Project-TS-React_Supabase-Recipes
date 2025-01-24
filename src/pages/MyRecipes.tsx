@@ -8,7 +8,7 @@ import Banner from "../components/Banner";
 
 const MyRecipes = () => {
     const [loading, setLoading] = useState<boolean>(true);
-    const { favRezepte, setFavRezepte, popularRecipes } = useContext(UserContext)
+    const { user, favRezepte, setFavRezepte, popularRecipes } = useContext(UserContext)
 
     const ladeFavoriten = async () => {
         try {
@@ -28,7 +28,6 @@ const MyRecipes = () => {
                 throw error;
             }
 
-            // Витягування рецептів та їх оновлення
             const rezepteDaten = (data?.map((item) => item.recipes) as unknown) as Database["public"]["Tables"]["recipes"]["Row"][];
             setFavRezepte(rezepteDaten);
         } catch (fehler) {
@@ -46,44 +45,55 @@ const MyRecipes = () => {
         <section className="bg-white">
             <Banner />
             <h1 className="text-3xl font-semibold text-center mb-7">Lieblingsrezepte</h1>
-            {loading ? (
-                <p className="text-3xl font-semibold text-center pb-7">Rezepte werden geladen...</p>
-            ) : favRezepte.length > 0 ? (
-                <div className="flex flex-wrap justify-center gap-5 pb-10">
-                    {favRezepte.map((recipe) => (
-                        <div
-                            key={recipe.id}
-                            className="w-72 bg-neutral-100 rounded-2xl"
-                        >
-                            {recipe.imageUrl && (
-                                <img
-                                    src={recipe.imageUrl}
-                                    alt={recipe.name}
-                                    className="w-full h-48 object-cover rounded-t-2xl"
-                                />
-                            )}
-                            <div className="p-5 flex flex-col gap-2">
-                                <h2 className="text-2xl font-semibold">{recipe.name}</h2>
-                                <p>{recipe.description}</p>
-                                <Link
-                                    to={`/recipes/${recipe.name.toLowerCase()}`}
-                                    className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
-                                >Zum Rezept</Link>
+            {user ? (
+                loading ? (
+                    <p className="text-3xl font-semibold text-center pb-7" > Rezepte werden geladen...</p>
+                ) : favRezepte.length > 0 ? (
+                    <div className="flex flex-wrap justify-center gap-5 pb-10">
+                        {favRezepte.map((recipe) => (
+                            <div
+                                key={recipe.id}
+                                className="w-72 bg-neutral-100 rounded-2xl"
+                            >
+                                {recipe.imageUrl && (
+                                    <img
+                                        src={recipe.imageUrl}
+                                        alt={recipe.name}
+                                        className="w-full h-48 object-cover rounded-t-2xl"
+                                    />
+                                )}
+                                <div className="p-5 flex flex-col gap-2">
+                                    <h2 className="text-2xl font-semibold">{recipe.name}</h2>
+                                    <p>{recipe.description}</p>
+                                    <Link
+                                        to={`/recipes/${recipe.name.toLowerCase()}`}
+                                        className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
+                                    >Zum Rezept</Link>
 
-                                <button
-                                    onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
-                                    className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
-                                >
-                                    {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
-                                </button>
+                                    <button
+                                        onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
+                                        className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
+                                    >
+                                        {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-3xl font-semibold text-center pb-7">Keine Favoriten gefunden.</p>
+                )
             ) : (
-                <p className="text-3xl font-semibold text-center pb-7">Keine Favoriten gefunden.</p>
+                <section className="bg-white h-96 flex justify-center items-center">
+                    <Link
+                        to="/login"
+                        className="text-2xl font-bold border-solid border-2 border-black p-4 bg-yellow-200 rounded-lg"
+                    >
+                        Login
+                    </Link>
+                </section >
             )}
-        </section>
+        </section >
     );
 }
 

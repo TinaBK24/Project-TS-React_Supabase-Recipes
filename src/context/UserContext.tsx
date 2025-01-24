@@ -60,6 +60,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }, [user]);
 
+
+
     return (
         <UserContext.Provider value={{ user, setUser, popularRecipes, setPopularRecipes, favRezepte, setFavRezepte }}>
             {children}

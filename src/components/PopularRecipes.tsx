@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { Link } from "react-router-dom";
 import { fetchFavoriteRecipes, toggleFavoriteRecipe } from "../utils/favoriteRecipes";
 import { Database } from "../utils/database.types";
+import { UserContext } from "../context/UserContext";
 
 interface PopularRecipesProps {
     favRezepte: Database["public"]["Tables"]["recipes"]["Row"][];
@@ -12,7 +13,7 @@ interface PopularRecipesProps {
 }
 
 const PopularRecipes: React.FC<PopularRecipesProps> = ({ favRezepte, setFavRezepte, popularRecipes, setPopularRecipes }) => {
-
+    const { user } = useContext(UserContext);
 
     const fetchPopularRecipes = async () => {
         const popularResponse = await supabase
@@ -60,12 +61,14 @@ const PopularRecipes: React.FC<PopularRecipesProps> = ({ favRezepte, setFavRezep
                                         className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
                                     >Zum Rezept</Link>
 
-                                    <button
-                                        onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
-                                        className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
-                                    >
-                                        {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
-                                    </button>
+                                    {user ? (
+                                        <button
+                                            onClick={() => toggleFavoriteRecipe(recipe.id, favRezepte, setFavRezepte, popularRecipes)}
+                                            className={`mt-4 w-fit ${favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? 'text-red-500' : 'text-gray-500'}`}
+                                        >
+                                            {favRezepte.some((favRecipe) => favRecipe.id === recipe.id) ? '❤️' : '🤍'} Favorit
+                                        </button>
+                                    ) : ("")}
                                 </div>
                             </div>
                         ))}
