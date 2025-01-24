@@ -47,7 +47,7 @@ const MyRecipes = () => {
             if (session) {
                 ladeFavoriten();
             } else {
-                console.log("Користувач не залогінений.");
+                console.log("Der Benutzer ist nicht angemeldet.");
             }
         };
         checkSession();
