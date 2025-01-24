@@ -70,7 +70,7 @@ const OtherRecipes: React.FC<OtherRecipesProps> = ({ favRezepte, setFavRezepte, 
                                     )}
                                     <div className="p-6 flex flex-col justify-between gap-2">
                                         <h2 className="text-2xl font-semibold">{recipe.name}</h2>
-                                        <p>{recipe.description}</p>
+                                        <p className="mb-2">{recipe.description}</p>
                                         <Link
                                             to={`/recipes/${recipe.name.toLowerCase()}`}
                                             className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"

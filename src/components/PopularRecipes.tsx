@@ -44,18 +44,22 @@ const PopularRecipes: React.FC<PopularRecipesProps> = ({ favRezepte, setFavRezep
                         {popularRecipes.map((recipe) => (
                             <div
                                 key={recipe.id}
-                                className="w-72 bg-neutral-100 rounded-2xl"
+                                className="flex flex-col justify-between gap-5 w-72 bg-neutral-100 rounded-2xl"
                             >
-                                {recipe.imageUrl && (
-                                    <img
-                                        src={recipe.imageUrl}
-                                        alt={recipe.name}
-                                        className="w-full h-48 object-cover rounded-t-2xl"
-                                    />
-                                )}
-                                <div className="p-5 flex flex-col gap-2">
-                                    <h2 className="text-2xl font-semibold">{recipe.name}</h2>
-                                    <p>{recipe.description}</p>
+                                <div>
+                                    {recipe.imageUrl && (
+                                        <img
+                                            src={recipe.imageUrl}
+                                            alt={recipe.name}
+                                            className="w-full h-48 object-cover rounded-t-2xl"
+                                        />
+                                    )}
+                                    <div className="px-5 mt-3">
+                                        <h2 className="text-2xl font-semibold mb-2">{recipe.name}</h2>
+                                        <p>{recipe.description}</p>
+                                    </div>
+                                </div>
+                                <div className="px-5 pb-5">
                                     <Link
                                         to={`/recipes/${recipe.name.toLowerCase()}`}
                                         className="bg-yellow-300 flex items-center justify-center rounded-3xl py-1 px-6 w-fit font-semibold"
